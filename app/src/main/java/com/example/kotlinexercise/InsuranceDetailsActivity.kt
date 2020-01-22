@@ -1,9 +1,7 @@
 package com.example.kotlinexercise
 
-import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.example.kotlinexercise.Model.ActivePolicy
 import com.example.kotlinexercise.Model.Business
@@ -14,10 +12,10 @@ import kotlinx.android.synthetic.main.insurance_details_activity.*
 class InsuranceDetailsActivity : AppCompatActivity() {
 
     val database = Realm.getDefaultInstance()
+    val manager = supportFragmentManager
     var ic: Long = 0
     lateinit var insuranceType: String
     lateinit var insuranceDetails: InsuranceDetailsInterface
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,12 +26,9 @@ class InsuranceDetailsActivity : AppCompatActivity() {
 
         if (insuranceType.equals("business")) {
             insuranceDetails = database.where<Business>().equalTo("ic", ic).findFirst()!!
-            loadBusinessDetailsCards()
         }
         else if (insuranceType.equals("policy")) {
             insuranceDetails = database.where<ActivePolicy>().equalTo("ic", ic).findFirst()!!
-            process_text.setText((insuranceDetails as ActivePolicy).process)
-            loadPolicyDetailsCards()
         }
 
         case_details_button.setOnClickListener {
@@ -48,48 +43,12 @@ class InsuranceDetailsActivity : AppCompatActivity() {
         back_button.setOnClickListener {
             finish()
         }
-        edit_button.setOnClickListener{
-            intent = Intent(this, NewRecordActivity::class.java)
-            intent.putExtra("form", "edit")
-            intent.putExtra("IC", insuranceDetails.ic)
-            intent.putExtra("name", insuranceDetails.name)
-            intent.putExtra("policyNo", insuranceDetails.policyNo)
-            intent.putExtra("typeID", insuranceDetails.typeID)
-            if (insuranceDetails is Business) {
-                intent.putExtra("type", "business")
-            }
-            else if (insuranceDetails is ActivePolicy) {
-                intent.putExtra("process", (insuranceDetails as ActivePolicy).process)
-                intent.putExtra("type", "policy")
-            }
-            startActivity(intent)
-        }
-        delete_button.setOnClickListener {
-            database.executeTransaction {
-                if (insuranceDetails is Business) {
-                    (insuranceDetails as Business).deleteFromRealm()
-                }
-                else if (insuranceDetails is ActivePolicy)
-                    (insuranceDetails as ActivePolicy).deleteFromRealm()
-            }
-            finish()
-        }
-
-        when (insuranceDetails.typeID) {
-            0 -> insurance_icon.setImageResource(R.drawable.image0)
-            1 -> insurance_icon.setImageResource(R.drawable.image1)
-            2 -> insurance_icon.setImageResource(R.drawable.image2)
-        }
+        showCaseDetailsFragment()
     }
 
     override fun onResume() {
         super.onResume()
-        if (insuranceType.equals("business")) {
-            loadBusinessDetailsCards()
-        }
-        else if (insuranceType.equals("policy")) {
-            loadPolicyDetailsCards()
-        }
+        updateTextAndImage()
     }
 
     private fun detailsButtonDown() {
@@ -116,31 +75,22 @@ class InsuranceDetailsActivity : AppCompatActivity() {
         info_button.setBackgroundResource(R.drawable.button_pressed)
         info_button.setTextColor(Color.WHITE)
     }
-    private fun loadBusinessDetailsCards() {
-        name_card.setCardBackgroundColor(Color.parseColor("#F0F0F0"))
-        id_card.setCardBackgroundColor(Color.parseColor("#FFFFFF"))
-        owner_card.setCardBackgroundColor(Color.parseColor("#F0F0F0"))
-        owner_id_card.setCardBackgroundColor(Color.parseColor("#FFFFFF"))
-        populateTexts()
-        process_card.visibility = View.GONE
+
+    private fun showCaseDetailsFragment() {
+        val transaction = manager.beginTransaction()
+        val fragment = CaseDetailsFragment(insuranceDetails, this)
+        transaction.replace(R.id.fragment_frame, fragment)
+        transaction.commit()
     }
 
-    private fun loadPolicyDetailsCards() {
-        process_card.setCardBackgroundColor(Color.parseColor("#F0F0F0"))
-        name_card.setCardBackgroundColor(Color.parseColor("#FFFFFF"))
-        id_card.setCardBackgroundColor(Color.parseColor("#F0F0F0"))
-        owner_card.setCardBackgroundColor(Color.parseColor("#FFFFFF"))
-        owner_id_card.setCardBackgroundColor(Color.parseColor("#F0F0F0"))
-        populateTexts()
-        process_card.visibility = View.VISIBLE
-    }
-
-    private fun populateTexts() {
-        //set text fields
+    private fun updateTextAndImage() {
         policy_holder.setText(insuranceDetails.name)
-        name_text.setText(insuranceDetails.name)
-        id_text.setText(insuranceDetails.ic.toString())
-        owner_text.setText(insuranceDetails.name)
-        owner_text.setText(insuranceDetails.ic.toString())
+        policy_holder_no.setText(insuranceDetails.policyNo)
+        when (insuranceDetails.typeID) {
+            0 -> insurance_icon.setImageResource(R.drawable.image0)
+            1 -> insurance_icon.setImageResource(R.drawable.image1)
+            2 -> insurance_icon.setImageResource(R.drawable.image2)
+        }
     }
+
 }
