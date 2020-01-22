@@ -21,7 +21,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
-            android:fontFamily="sans-serif-condensed-medium"
+            android:fontFamily="sans-serif-black"
             android:text="Chong Mah Xin"
             android:textColor="#000000"
             android:textSize="18sp"
@@ -34,6 +34,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
             android:layout_marginTop="21dp"
+            android:fontFamily="sans-serif-black"
             android:text="NRIC No."
             android:textColor="#000000"
             app:layout_constraintStart_toEndOf="@+id/business_icon"
@@ -45,6 +46,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
             android:layout_marginTop="18dp"
+            android:fontFamily="sans-serif-black"
             android:text="Policy No."
             android:textColor="#000000"
             app:layout_constraintStart_toEndOf="@+id/business_icon"
@@ -56,6 +58,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
             android:layout_marginTop="18dp"
+            android:fontFamily="sans-serif-black"
             android:text="Process."
             android:textColor="#000000"
             android:visibility="visible"
@@ -68,7 +71,7 @@
             android:layout_height="54dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:fontFamily="sans-serif-medium"
+            android:fontFamily="sans-serif-black"
             android:maxLines="3"
             android:text="Awaiting General Document"
             android:textAlignment="center"
@@ -83,6 +86,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="21dp"
             android:ems="10"
+            android:textColor="#000000"
             app:layout_constraintStart_toEndOf="@+id/textView8"
             app:layout_constraintTop_toBottomOf="@+id/nameText" />
 
@@ -93,6 +97,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="18dp"
             android:ems="10"
+            android:textColor="#000000"
             app:layout_constraintStart_toEndOf="@+id/textView9"
             app:layout_constraintTop_toBottomOf="@+id/nricText" />
 
@@ -103,6 +108,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="18dp"
             android:ems="10"
+            android:textColor="#000000"
             android:visibility="visible"
             app:layout_constraintStart_toEndOf="@+id/process_card"
             app:layout_constraintTop_toBottomOf="@+id/policyText" />

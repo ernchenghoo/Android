@@ -58,6 +58,7 @@ class InsuranceDetailsActivity : AppCompatActivity() {
         scan_doc_button.setTextColor(Color.BLACK)
         info_button.setBackgroundColor(Color.TRANSPARENT)
         info_button.setTextColor(Color.BLACK)
+        showCaseDetailsFragment()
     }
     private fun scanDocButtonDown() {
         case_details_button.setBackgroundColor(Color.TRANSPARENT)
@@ -66,6 +67,7 @@ class InsuranceDetailsActivity : AppCompatActivity() {
         scan_doc_button.setTextColor(Color.WHITE)
         info_button.setBackgroundColor(Color.TRANSPARENT)
         info_button.setTextColor(Color.BLACK)
+        showScanDocFragment()
     }
     private fun infoButtonDown() {
         case_details_button.setBackgroundColor(Color.TRANSPARENT)
@@ -74,11 +76,26 @@ class InsuranceDetailsActivity : AppCompatActivity() {
         scan_doc_button.setTextColor(Color.BLACK)
         info_button.setBackgroundResource(R.drawable.button_pressed)
         info_button.setTextColor(Color.WHITE)
+        showInfoFragment()
     }
 
     private fun showCaseDetailsFragment() {
         val transaction = manager.beginTransaction()
         val fragment = CaseDetailsFragment(insuranceDetails, this)
+        transaction.replace(R.id.fragment_frame, fragment)
+        transaction.commit()
+    }
+
+    private fun showScanDocFragment() {
+        val transaction = manager.beginTransaction()
+        val fragment = ScanDocFragment()
+        transaction.replace(R.id.fragment_frame, fragment)
+        transaction.commit()
+    }
+
+    private fun showInfoFragment() {
+        val transaction = manager.beginTransaction()
+        val fragment = InfoFragment()
         transaction.replace(R.id.fragment_frame, fragment)
         transaction.commit()
     }
